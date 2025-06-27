@@ -7,7 +7,7 @@
       <input v-model="confirmPassword" type="password" placeholder="Confirm Password" required />
       <button type="submit">Register</button>
     </form>
-    <p>Already have an account? <router-link to="/login">Login here</router-link></p>
+    <p>Already have an account? <router-link to="/login">Login</router-link></p>
   </div>
 </template>
 

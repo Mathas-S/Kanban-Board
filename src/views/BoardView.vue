@@ -73,9 +73,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import draggable from 'vuedraggable'
-
+import { loadBoards, saveBoards } from '@/mockup/boardStorage'
 import BoardCard from '@/components/BoardCard.vue'
 import InviteSection from '@/components/InviteSection.vue'
 import ColumnCard from '@/components/ColumnCard.vue'
@@ -100,17 +100,30 @@ interface Board {
   members: string[]
 }
 
-const boards = ref<Board[]>([
-  {
-    id: 1,
-    name: 'First Board',
-    members: ['admin@example.com'],
-    columns: [
-      { id: 1, name: 'To Do', tasks: [{ id: 1, title: 'Example Task 1', tags: ['urgent'] }] },
-      { id: 2, name: 'In Progress', tasks: [] },
-    ],
+const boards = ref<Board[]>(loadBoards())
+
+if (boards.value.length === 0) {
+  boards.value = [
+    {
+      id: 1,
+      name: 'First Board',
+      members: ['admin@example.com'],
+      columns: [
+        { id: 1, name: 'To Do', tasks: [{ id: 1, title: 'Example Task 1', tags: ['urgent'] }] },
+        { id: 2, name: 'In Progress', tasks: [] },
+      ],
+    },
+  ]
+}
+
+watch(
+  boards,
+  (newVal) => {
+    saveBoards(newVal)
   },
-])
+  { deep: true }
+)
+
 
 const newBoardName = ref('')
 const selectedBoardId = ref<number | null>(null)
