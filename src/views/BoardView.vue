@@ -106,8 +106,8 @@ if (boards.value.length === 0) {
   boards.value = [
     {
       id: 1,
-      name: 'First Board',
-      members: ['admin@example.com'],
+      name: 'Example Board',
+      members: ['member@example.com'],
       columns: [
         { id: 1, name: 'To Do', tasks: [{ id: 1, title: 'Example Task 1', tags: ['urgent'] }] },
         { id: 2, name: 'In Progress', tasks: [] },
