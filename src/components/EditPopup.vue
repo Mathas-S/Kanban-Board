@@ -142,6 +142,12 @@ function deleteTask() {
   cursor: pointer;
   font-weight: 600;
 }
+.popup-actions button:hover {
+ background: #474747;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
 
 .delete-btn {
   margin-left: auto;

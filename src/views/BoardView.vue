@@ -54,17 +54,19 @@
     </div>
 
    
-   <EditPopup
+  <EditPopup
   v-if="editPopup.show"
   :show="editPopup.show"
   :type="editPopup.type"
   :data="editPopup.data"
   @save="saveEditPopup"
   @close="closeEditPopup"
-  @delete-task="() => deleteTaskFromPopup(editPopup.data.taskId, editPopup.data.columnId)"
+  @delete-task="handleDeleteFromPopup"
   @add-tag="addTagToPopup"
   @remove-tag="removeTagFromPopup"
 />
+
+
 
 
   </div>
@@ -184,6 +186,17 @@ function handleRemoveTag({ taskId, tag }: { taskId: number; tag: string }) {
   }
 }
 
+function handleDeleteFromPopup() {
+  const taskId = editPopup.data.id || editPopup.data.taskId
+  const columnId = editPopup.data.columnId
+  if (taskId == null || columnId == null) {
+    console.warn('Missing taskId or columnId in editPopup.data', editPopup.data)
+    return
+  }
+  deleteTaskFromPopup(taskId, columnId)
+}
+
+
 
 
 const editPopup = reactive({
@@ -210,18 +223,23 @@ function openEditColumn(column: Column) {
 
 
 function openEditTask(task: Task) {
-  editPopup.type = 'task'
-  editPopup.data = { ...task }
-
   if (!selectedBoard.value) return
+
+  const data: any = { ...task, taskId: task.id }  
+
   for (const col of selectedBoard.value.columns) {
     if (col.tasks.find(t => t.id === task.id)) {
-      editPopup.data.columnId = col.id
+      data.columnId = col.id
       break
     }
   }
+
+  editPopup.type = 'task'
+  editPopup.data = data
   editPopup.show = true
 }
+
+
 
 function closeEditPopup() {
   editPopup.show = false
@@ -258,12 +276,14 @@ function saveEditPopup(updatedData: any) {
 
 
 function deleteTaskFromPopup(taskId: number, columnId: number) {
+  console.log('Deleting task', taskId, 'from column', columnId)
   if (!selectedBoard.value) return
   const column = selectedBoard.value.columns.find(c => c.id === columnId)
   if (!column) return
   column.tasks = column.tasks.filter(t => t.id !== taskId)
   closeEditPopup()
 }
+
 
 function addTagToPopup(tag: string) {
   if (!editPopup.show || editPopup.type !== 'task') return
