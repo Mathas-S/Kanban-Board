@@ -7,6 +7,8 @@
       <input v-model="confirmPassword" type="password" placeholder="Confirm Password" required />
       <button type="submit">Register</button>
     </form>
+    <p v-if="errorMsg" style="color: red; margin-top: 0.5rem;">{{ errorMsg }}</p>
+<p v-if="successMsg" style="color: green; margin-top: 0.5rem;">{{ successMsg }}</p>
     <p>Already have an account? <router-link to="/login">Login</router-link></p>
   </div>
 </template>
@@ -14,20 +16,34 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { addUser } from '@/mockup/authStorage'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
+const errorMsg = ref('')
+const successMsg = ref('')
 
 const handleRegister = () => {
-  if(password.value !== confirmPassword.value) {
-    alert('Passwords do not match')
+  errorMsg.value = ''
+  successMsg.value = ''
+
+  if (password.value !== confirmPassword.value) {
+    errorMsg.value = 'Passwords do not match'
     return
   }
-//   เอาไว้ใส่ mockup
-  alert('Registered successfully (mock)')
-  router.push('/login')
+
+  const success = addUser(email.value.trim(), password.value)
+  if (!success) {
+    errorMsg.value = 'This email is already registered.'
+    return
+  }
+
+  successMsg.value = 'Registered successfully!'
+  setTimeout(() => {
+    router.push('/login')
+  }, 1000)
 }
 </script>
 

@@ -6,6 +6,7 @@
       <input v-model="password" type="password" placeholder="Password" required />
       <button type="submit">Login</button>
     </form>
+    <p v-if="errorMsg" style="color: red; margin-top: 0.5rem;">{{ errorMsg }}</p>
     <p>Don't have an account? <router-link to="/register">Register</router-link></p>
   </div>
 </template>
@@ -13,15 +14,23 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { authenticate , loginUser } from '@/mockup/authStorage'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
+const errorMsg = ref('')
 
 const handleLogin = () => {
-  //เอาไว้ใส่ mockup
-  if(email.value && password.value) {
-    router.push('/board')
+  if (email.value && password.value) {
+    const success = authenticate(email.value, password.value)
+    if (success) {
+      loginUser(email.value)  
+      errorMsg.value = ''
+      router.push('/board')
+    } else {
+      errorMsg.value = 'Invalid email or password'
+    }
   }
 }
 </script>
