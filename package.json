@@ -12,6 +12,8 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "ant-design-vue": "^4.2.6",
     "vue": "^3.5.17",
     "vue-draggable-next": "^2.2.1",
     "vuedraggable": "^4.1.0"
