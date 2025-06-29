@@ -274,7 +274,6 @@ function removeTagFromPopup(tag: string) {
   font-weight: 900;
   font-size: 3.2rem;
   text-align: center;
-  text-shadow: 0 4px 12px rgba(47, 61, 77, 0.3);
   position: relative;
 }
 
