@@ -1,6 +1,6 @@
 <template>
   <div class="board-container">
-    <h1>Your Boards</h1>
+    <h1>Kanban Board</h1>
 
     <div class="boards-list">
       <BoardCard v-for="board in boards" :key="board.id" :board="board" :selectedBoardId="selectedBoardId"
