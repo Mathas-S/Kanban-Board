@@ -255,21 +255,30 @@ function removeTagFromPopup(tag: string) {
 
 <style scoped>
 .board-container {
-  max-width: 1200px;
+   max-width: 1200px;
   margin: 2rem auto;
-  padding: 2rem;
-  background: #faf8f8;
-  border-radius: 20px;
-  border: 10px solid #333;
+  padding: 3rem;
+  background: linear-gradient(135deg, #f8fbff 0%, #e8f4ff 100%);
+  border-radius: 24px;
+  border: 8px solid #007bff;
   min-height: 100vh;
+  box-shadow: 0 20px 40px rgba(0, 123, 255, 0.15);
 }
 
 .board-container h1 {
-  color: #333;
-  margin-bottom: 2rem;
-  font-weight: 600;
+  background: linear-gradient(1135deg, #006eff 0%, #0084ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2.5rem;
+  font-weight: 900;
+  font-size: 3.2rem;
   text-align: center;
+  text-shadow: 0 4px 12px rgba(47, 61, 77, 0.3);
+  position: relative;
 }
+
+
 
 .boards-list {
   display: flex;
@@ -348,7 +357,7 @@ function removeTagFromPopup(tag: string) {
 
 .add-column input,
 .add-column button {
-  width: 100%;
+  width: 90%;
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;

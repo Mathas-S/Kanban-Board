@@ -152,7 +152,7 @@ function addTask() {
 }
 
 .add-task button {
-  width: 100%;
+  width: 93%;
   padding: 0.5rem;
   border-radius: 6px;
   border: none;
