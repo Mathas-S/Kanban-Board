@@ -3,15 +3,8 @@
     <h1>Your Boards</h1>
 
     <div class="boards-list">
-      <BoardCard
-        v-for="board in boards"
-        :key="board.id"
-        :board="board"
-        :selectedBoardId="selectedBoardId"
-        @select="selectBoard"
-        @edit="openEditBoard"
-        @delete="deleteBoard"
-      />
+      <BoardCard v-for="board in boards" :key="board.id" :board="board" :selectedBoardId="selectedBoardId"
+        @select="selectBoard" @edit="openEditBoard" @delete="deleteBoard" />
 
       <div class="board-add">
         <input v-model="newBoardName" placeholder="New Board Name" @keyup.enter="createBoard" />
@@ -22,28 +15,15 @@
     <div v-if="selectedBoard" class="selected-board">
       <h2>{{ selectedBoard.name }}</h2>
 
-      <InviteSection
-        :members="selectedBoard.members"
-        @invite="inviteMember"
-      />
+      <InviteSection :members="selectedBoard.members" @invite="inviteMember" @open-popup="showInvitePopup = true" />
 
-      <draggable
-        v-model="selectedBoard.columns"
-        group="columns"
-        item-key="id"
-        class="columns-container"
-        @end="onColumnDragEnd"
-      >
+      <InvitePopup v-if="showInvitePopup" @close="showInvitePopup = false" @invite="inviteMember" />
+
+      <draggable v-model="selectedBoard.columns" group="columns" item-key="id" class="columns-container"
+        @end="onColumnDragEnd">
         <template #item="{ element: column }">
-          <ColumnCard
-            :column="column"
-            @edit="openEditColumn"
-            @delete="deleteColumn"
-            @edit-task="openEditTask"
-            @remove-tag="handleRemoveTag"
-            @add-task="handleAddTask"
-            @task-drag-end="onTaskDragEnd"
-          />
+          <ColumnCard :column="column" @edit="openEditColumn" @delete="deleteColumn" @edit-task="openEditTask"
+            @remove-tag="handleRemoveTag" @add-task="handleAddTask" @task-drag-end="onTaskDragEnd" />
         </template>
       </draggable>
 
@@ -53,22 +33,9 @@
       </div>
     </div>
 
-   
-  <EditPopup
-  v-if="editPopup.show"
-  :show="editPopup.show"
-  :type="editPopup.type"
-  :data="editPopup.data"
-  @save="saveEditPopup"
-  @close="closeEditPopup"
-  @delete-task="handleDeleteFromPopup"
-  @add-tag="addTagToPopup"
-  @remove-tag="removeTagFromPopup"
-/>
-
-
-
-
+    <EditPopup v-if="editPopup.show" :show="editPopup.show" :type="editPopup.type" :data="editPopup.data"
+      @save="saveEditPopup" @close="closeEditPopup" @delete-task="handleDeleteFromPopup" @add-tag="addTagToPopup"
+      @remove-tag="removeTagFromPopup" />
   </div>
 </template>
 
@@ -124,13 +91,12 @@ watch(
   { deep: true }
 )
 
-
 const newBoardName = ref('')
 const selectedBoardId = ref<number | null>(null)
 const newColumnName = ref('')
+const showInvitePopup = ref(false)
 
 const selectedBoard = computed(() => boards.value.find(b => b.id === selectedBoardId.value) || null)
-
 
 function createBoard() {
   const name = newBoardName.value.trim()
@@ -139,7 +105,6 @@ function createBoard() {
   boards.value.push({ id: newId, name, members: [], columns: [] })
   newBoardName.value = ''
 }
-
 
 function selectBoard(id: number) {
   selectedBoardId.value = id
@@ -150,7 +115,6 @@ function deleteBoard(id: number) {
   if (selectedBoardId.value === id) selectedBoardId.value = null
 }
 
-
 function createColumn() {
   if (!selectedBoard.value) return
   const name = newColumnName.value.trim()
@@ -160,7 +124,6 @@ function createColumn() {
   columns.push({ id: newId, name, tasks: [] })
   newColumnName.value = ''
 }
-
 
 function deleteColumn(id: number) {
   if (!selectedBoard.value) return
@@ -174,10 +137,8 @@ function inviteMember(email: string) {
   }
 }
 
-
-function onColumnDragEnd() {}
-function onTaskDragEnd() {}
-
+function onColumnDragEnd() { }
+function onTaskDragEnd() { }
 
 function handleAddTask({ columnId, title }: { columnId: number; title: string }) {
   if (!selectedBoard.value) return
@@ -186,7 +147,6 @@ function handleAddTask({ columnId, title }: { columnId: number; title: string })
   const newId = Math.max(0, ...column.tasks.map(t => t.id)) + 1
   column.tasks.push({ id: newId, title, tags: [] })
 }
-
 
 function handleRemoveTag({ taskId, tag }: { taskId: number; tag: string }) {
   if (!selectedBoard.value) return
@@ -209,24 +169,18 @@ function handleDeleteFromPopup() {
   deleteTaskFromPopup(taskId, columnId)
 }
 
-
-
-
 const editPopup = reactive({
   show: false,
   type: '' as 'board' | 'column' | 'task',
   data: {} as any,
 })
 
-
 function openEditBoard(board: Board) {
-  selectedBoardId.value = board.id  
+  selectedBoardId.value = board.id
   editPopup.type = 'board'
   editPopup.data = { ...board }
   editPopup.show = true
 }
-
-
 
 function openEditColumn(column: Column) {
   editPopup.type = 'column'
@@ -234,36 +188,27 @@ function openEditColumn(column: Column) {
   editPopup.show = true
 }
 
-
 function openEditTask(task: Task) {
   if (!selectedBoard.value) return
-
-  const data: any = { ...task, taskId: task.id }  
-
+  const data: any = { ...task, taskId: task.id }
   for (const col of selectedBoard.value.columns) {
     if (col.tasks.find(t => t.id === task.id)) {
       data.columnId = col.id
       break
     }
   }
-
   editPopup.type = 'task'
   editPopup.data = data
   editPopup.show = true
 }
 
-
-
 function closeEditPopup() {
   editPopup.show = false
   editPopup.data = {}
-  editPopup.data = {}
 }
-
 
 function saveEditPopup(updatedData: any) {
   if (!selectedBoard.value) return
-
   if (editPopup.type === 'board') {
     const board = boards.value.find(b => b.id === updatedData.id)
     if (board) {
@@ -283,20 +228,16 @@ function saveEditPopup(updatedData: any) {
       task.tags = [...updatedData.tags]
     }
   }
-
   closeEditPopup()
 }
 
-
 function deleteTaskFromPopup(taskId: number, columnId: number) {
-  console.log('Deleting task', taskId, 'from column', columnId)
   if (!selectedBoard.value) return
   const column = selectedBoard.value.columns.find(c => c.id === columnId)
   if (!column) return
   column.tasks = column.tasks.filter(t => t.id !== taskId)
   closeEditPopup()
 }
-
 
 function addTagToPopup(tag: string) {
   if (!editPopup.show || editPopup.type !== 'task') return
@@ -317,7 +258,9 @@ function removeTagFromPopup(tag: string) {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #f8f9fa;
+  background: #faf8f8;
+  border-radius: 20px;
+  border: 10px solid #333;
   min-height: 100vh;
 }
 
@@ -346,8 +289,8 @@ function removeTagFromPopup(tag: string) {
   min-width: 200px;
 }
 
-.board-add input{
-    background: white;
+.board-add input {
+  background: white;
   padding: 0.5rem;
   margin: 0.25rem 0;
   max-width: 15rem;

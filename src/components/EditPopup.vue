@@ -24,9 +24,9 @@
       </template>
       
       <div class="popup-actions">
-        <button @click="save">Save</button>
+        <button @click="save" class="task-save-btn">Save</button>
         <button @click="close">Cancel</button>
-        <button v-if="type === 'task'" @click="deleteTask" class="delete-btn">Delete Task</button>
+        <button v-if="type === 'task'" @click="deleteTask" class="delete-btn">Delete</button>
       </div>
     </div>
   </div>
@@ -146,6 +146,11 @@ function deleteTask() {
  background: #474747;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+.task-save-btn{
+  background:#007bff ;
   color: #ffffff;
 }
 

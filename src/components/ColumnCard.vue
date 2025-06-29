@@ -3,8 +3,8 @@
     <div class="column-header">
       <h3>{{ column.name }}</h3>
       <div>
-        <button @click.stop="$emit('edit', column)">Edit</button>
-        <button @click.stop="$emit('delete', column.id)">Delete</button>
+        <button @click.stop="$emit('edit', column)" class="column-edit-btn">Edit</button>
+        <button @click.stop="$emit('delete', column.id )" class="column-delete-btn">Delete</button>
       </div>
     </div>
 
@@ -118,7 +118,6 @@ function addTask() {
 
 .column-header button {
   padding: 0.4rem 0.8rem;
-  background: #757575;
   color: white;
   border: none;
   border-radius: 4px;
@@ -160,5 +159,13 @@ function addTask() {
   background-color: #007bff;
   color: white;
   cursor: pointer;
+}
+
+.column-edit-btn{
+  background-color: #007bff;
+}
+
+.column-delete-btn{
+  background-color: rgb(206, 10, 10) ;
 }
 </style>

@@ -6,8 +6,8 @@
   >
     <div class="board-name">{{ board.name }}</div>
     <div class="board-actions">
-      <button @click.stop="$emit('edit', board)">Edit</button>
-      <button @click.stop="$emit('delete', board.id)">Delete</button>
+      <button @click.stop="$emit('edit', board)" class="board-edit-btn">Edit</button>
+      <button @click.stop="$emit('delete', board.id)" class="board-delete-btn">Delete</button>
     </div>
   </div>
 </template>
@@ -70,9 +70,16 @@ const emit = defineEmits<{
   gap: 0.5rem;
 }
 
+.board-edit-btn{
+  background: #007bff;
+}
+
+.board-delete-btn {
+  background: rgb(206, 10, 10);
+}
+
 .board-actions button {
   padding: 0.4rem 0.8rem;
-  background: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
