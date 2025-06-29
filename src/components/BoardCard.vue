@@ -99,7 +99,6 @@ const emit = defineEmits<{
   transform: translateY(0);
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .board-card {
     min-width: auto;
