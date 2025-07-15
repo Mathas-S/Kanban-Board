@@ -1,39 +1,21 @@
 # kanban-board
 
-This template should help get you started developing with Vue 3 in Vite.
+Login & Register Pages
+Users can sign up and log in with their credentials. Upon successful login, users are automatically redirected to the main dashboard.
 
-## Recommended IDE Setup
+Your Boards
+Displays a list of all boards created by the user.
+Users can create, edit, or delete boards.
+Includes a built-in Example Board for demonstration purposes.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Board Details
+Displays a list of members associated with each board using their email addresses.
+Users can add members using the "Add Member" button (mockup logic).
 
-## Type Support for `.vue` Imports in TS
+Columns & Tasks
+Boards contain multiple columns
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Users can
+Add, edit, delete, and reorder columns (via drag-and-drop).
+Add tasks to any column.
+Edit task titles.
